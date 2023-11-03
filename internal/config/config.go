@@ -18,14 +18,21 @@ type Config struct {
 	HttpClient    HttpClientConfig    `mapstructure:"http_client"`
 	Logger        LoggerConfig        `mapstructure:"logger"`
 	ObjectStorage MinioConfig         `mapstructure:"object_storage"`
+	Midtrans      MidtransConfig      `mapstructure:"midtrans"`
+}
+
+type MidtransConfig struct {
+	IsProduction bool   `mapstructure:"is_production"`
+	ServerKey    string `mapstructure:"server_key"`
+	ClientKey    string `mapstructure:"client_key"`
 }
 
 type MinioConfig struct {
-	Endpoint        string `json:"endpoint"`
-	AccessKeyID     string `json:"access_key_id"`
-	SecretAccessKey string `json:"secret_access_key"`
-	UseSSL          bool   `json:"use_ssl"`
-	BucketName      string `json:"bucket_name"`
+	Endpoint        string `mapstructure:"endpoint"`
+	AccessKeyID     string `mapstructure:"access_key_id"`
+	SecretAccessKey string `mapstructure:"secret_access_key"`
+	UseSSL          bool   `mapstructure:"use_ssl"`
+	BucketName      string `mapstructure:"bucket_name"`
 }
 
 type HttpClientConfig struct {
