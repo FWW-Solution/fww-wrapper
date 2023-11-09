@@ -11,9 +11,9 @@ type adapter struct {
 }
 
 type Adapter interface {
-	GetPassanger(url string) (resp []byte, err error)
+	GetPassanger(id int) (resp []byte, err error)
 	RegisterPassanger(body *dto_passanger.RequestRegister) (resp dto_passanger.ResponseRegistered, err error)
-	UpdatePassanger(url string) (resp []byte, err error)
+	UpdatePassanger(body *dto_passanger.RequestUpdate) (resp dto_passanger.ResponseUpdate, err error)
 }
 
 func New(client *circuit.HTTPClient) Adapter {
@@ -22,7 +22,7 @@ func New(client *circuit.HTTPClient) Adapter {
 	}
 }
 
-func (a *adapter) GetPassanger(url string) (resp []byte, err error) {
+func (a *adapter) GetPassanger(id int) (resp []byte, err error) {
 	return nil, nil
 }
 
@@ -30,6 +30,6 @@ func (a *adapter) RegisterPassanger(body *dto_passanger.RequestRegister) (resp d
 	return dto_passanger.ResponseRegistered{}, nil
 }
 
-func (a *adapter) UpdatePassanger(url string) (resp []byte, err error) {
-	return nil, nil
+func (a *adapter) UpdatePassanger(body *dto_passanger.RequestUpdate) (resp dto_passanger.ResponseUpdate, err error) {
+	return dto_passanger.ResponseUpdate{}, nil
 }
