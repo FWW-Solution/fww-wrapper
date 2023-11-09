@@ -7,7 +7,8 @@ import (
 )
 
 type Config struct {
-	ServiceName string `mapstructure:"service_name"`
+	ServiceName string           `mapstructure:"service_name"`
+	HttpServer  HttpServerConfig `mapstructure:"http_server"`
 
 	Database      DatabaseConfig      `mapstructure:"database"`
 	Redis         RedisConfig         `mapstructure:"redis"`
@@ -19,6 +20,11 @@ type Config struct {
 	Logger        LoggerConfig        `mapstructure:"logger"`
 	ObjectStorage MinioConfig         `mapstructure:"object_storage"`
 	Midtrans      MidtransConfig      `mapstructure:"midtrans"`
+}
+
+type HttpServerConfig struct {
+	Host string `mapstructure:"host"`
+	Port string `mapstructure:"port"`
 }
 
 type MidtransConfig struct {

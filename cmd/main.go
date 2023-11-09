@@ -1,38 +1,36 @@
 package main
 
 import (
-	"errors"
 	"fww-wrapper/internal/config"
-	logger "fww-wrapper/internal/container/infrastructure/log"
-	"math/rand"
-	"time"
-
-	"go.uber.org/zap"
+	"fww-wrapper/internal/container"
+	"fww-wrapper/internal/container/infrastructure/http"
 )
 
 func main() {
-	// // init config
-	// cfg := config.InitConfig()
-
-	// // init service
-	// container.InitService(cfg)
-
 	// init config
 	cfg := config.InitConfig()
 
-	log := logger.Initialize(cfg)
-	count := 0
-	for {
+	// init service
+	app := container.InitService(cfg)
 
-		if rand.Float32() > 0.8 {
-			log.Error("oops...something is wrong",
-				zap.Int("count", count),
-				zap.Error(errors.New("error details")))
-		} else {
-			log.Info("everything is fine",
-				zap.Int("count", count))
-		}
-		count++
-		time.Sleep(time.Second * 2)
-	}
+	http.StartHttpServer(app, cfg.HttpServer.Port)
+
+	// // init config
+	// cfg := config.InitConfig()
+
+	// log := logger.Initialize(cfg)
+	// count := 0
+	// for {
+
+	// 	if rand.Float32() > 0.8 {
+	// 		log.Error("oops...something is wrong",
+	// 			zap.Int("count", count),
+	// 			zap.Error(errors.New("error details")))
+	// 	} else {
+	// 		log.Info("everything is fine",
+	// 			zap.Int("count", count))
+	// 	}
+	// 	count++
+	// 	time.Sleep(time.Second * 2)
+	// }
 }

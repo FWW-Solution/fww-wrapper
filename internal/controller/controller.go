@@ -8,27 +8,32 @@ import (
 	"strconv"
 
 	"github.com/gofiber/fiber/v2"
+	"go.uber.org/zap"
 )
 
 type Controller struct {
-	adapter adapter.Adapter
+	Adapter adapter.Adapter
+	Log     *zap.SugaredLogger
 }
 
 func (c *Controller) RegisterPassanger(ctx *fiber.Ctx) error {
 	var body dto_passanger.RequestRegister
 
 	if err := ctx.BodyParser(&body); err != nil {
+		c.Log.Error(err)
 		return err
 	}
 
 	// validate body
 	errValidation := tools.ValidateVariable(body)
 	if errValidation != nil {
+		c.Log.Error(errValidation)
 		return ctx.JSON(errValidation)
 	}
 
-	result, err := c.adapter.RegisterPassanger(&body)
+	result, err := c.Adapter.RegisterPassanger(&body)
 	if err != nil {
+		c.Log.Error(err)
 		return err
 	}
 
@@ -48,11 +53,13 @@ func (c *Controller) DetailPassanger(ctx *fiber.Ctx) error {
 	dataInt, err := strconv.Atoi(data)
 
 	if err != nil {
+		c.Log.Error(err)
 		return err
 	}
 
-	result, err := c.adapter.GetPassanger(dataInt)
+	result, err := c.Adapter.GetPassanger(dataInt)
 	if err != nil {
+		c.Log.Error(err)
 		return err
 	}
 
@@ -71,16 +78,18 @@ func (c *Controller) UpdatePassanger(ctx *fiber.Ctx) error {
 	var body dto_passanger.RequestUpdate
 
 	if err := ctx.BodyParser(&body); err != nil {
+		c.Log.Error(err)
 		return err
 	}
 
 	// validate body
 	errValidation := tools.ValidateVariable(body)
 	if errValidation != nil {
+		c.Log.Error(errValidation)
 		return ctx.JSON(errValidation)
 	}
 
-	result, err := c.adapter.UpdatePassanger(&body)
+	result, err := c.Adapter.UpdatePassanger(&body)
 	if err != nil {
 		return err
 	}
