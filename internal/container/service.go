@@ -56,7 +56,7 @@ func InitService(cfg *config.Config) *fiber.App {
 	}
 
 	// Init Adapter
-	adapter := adapter.New(client)
+	adapter := adapter.New(client, &cfg.HttpClient)
 	// Init Controller
 	ctrl := controller.Controller{Adapter: adapter, Log: log}
 

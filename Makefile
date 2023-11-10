@@ -1,8 +1,8 @@
 .PHONY: build clean development and deploy
 
-run-tools:
-	@echo "Running tools..."
-	docker compose -f infrastructure-devops/docker-compose.yml up -d
+run:
+	@echo "Running application..."
+	go run cmd/main.go
 
 clean-tools:
 	@echo "Cleaning tools..."

@@ -28,7 +28,7 @@ func (c *Controller) RegisterPassanger(ctx *fiber.Ctx) error {
 	errValidation := tools.ValidateVariable(body)
 	if errValidation != nil {
 		c.Log.Error(errValidation)
-		return ctx.JSON(errValidation)
+		return ctx.Status(fiber.StatusBadRequest).JSON(errValidation)
 	}
 
 	result, err := c.Adapter.RegisterPassanger(&body)
@@ -45,11 +45,11 @@ func (c *Controller) RegisterPassanger(ctx *fiber.Ctx) error {
 
 	response := tools.ResponseBuilder(result, meta)
 
-	return ctx.JSON(response)
+	return ctx.Status(fiber.StatusCreated).JSON(response)
 }
 
 func (c *Controller) DetailPassanger(ctx *fiber.Ctx) error {
-	data := ctx.Query("data")
+	data := ctx.Query("id")
 	dataInt, err := strconv.Atoi(data)
 
 	if err != nil {
@@ -64,14 +64,14 @@ func (c *Controller) DetailPassanger(ctx *fiber.Ctx) error {
 	}
 
 	meta := dto.MetaResponse{
-		StatusCode: "201",
+		StatusCode: "200",
 		IsSuccess:  true,
 		Message:    "Success",
 	}
 
 	response := tools.ResponseBuilder(result, meta)
 
-	return ctx.JSON(response)
+	return ctx.Status(fiber.StatusOK).JSON(response)
 }
 
 func (c *Controller) UpdatePassanger(ctx *fiber.Ctx) error {
@@ -102,6 +102,6 @@ func (c *Controller) UpdatePassanger(ctx *fiber.Ctx) error {
 
 	response := tools.ResponseBuilder(result, meta)
 
-	return ctx.JSON(response)
+	return ctx.Status(fiber.StatusCreated).JSON(response)
 
 }
