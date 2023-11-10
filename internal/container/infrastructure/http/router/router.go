@@ -14,8 +14,12 @@ func Initialize(app *fiber.App, ctrl *controller.Controller) *fiber.App {
 
 	v1 := Api.Group("/v1")
 
+	// Passanger
 	v1.Post("/passanger", ctrl.RegisterPassanger)
 	v1.Get("/passanger", ctrl.DetailPassanger)
 	v1.Put("/passanger", ctrl.UpdatePassanger)
+
+	// Airport
+	v1.Get("/airports", ctrl.GetAirport)
 	return app
 }

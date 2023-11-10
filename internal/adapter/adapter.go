@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"fww-wrapper/internal/config"
 	"fww-wrapper/internal/data/dto"
+	"fww-wrapper/internal/data/dto_airport"
 	"fww-wrapper/internal/data/dto_passanger"
 	"net/http"
 
@@ -23,6 +24,7 @@ type Adapter interface {
 	GetPassanger(id int) (resp dto_passanger.ResponseDetail, err error)
 	RegisterPassanger(body *dto_passanger.RequestRegister) (resp dto_passanger.ResponseRegistered, err error)
 	UpdatePassanger(body *dto_passanger.RequestUpdate) (resp dto_passanger.ResponseUpdate, err error)
+	GetAirport(city, province, iata string) (resp []dto_airport.ResponseAirport, err error)
 }
 
 func New(client *circuit.HTTPClient, cfg *config.HttpClientConfig) Adapter {
