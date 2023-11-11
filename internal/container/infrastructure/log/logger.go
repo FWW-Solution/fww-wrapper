@@ -30,12 +30,7 @@ func Initialize(cfg *config.Config) *zap.SugaredLogger {
 		core = ecszap.NewCore(encoderConfig, os.Stdout, atom)
 
 	} else {
-		core = zapcore.NewCore(
-			zapcore.NewJSONEncoder(zap.NewProductionEncoderConfig()),
-			// zapcore.NewMultiWriteSyncer(zapcore.AddSync(os.Stdout)),
-			zapcore.NewMultiWriteSyncer(),
-			atom,
-		)
+		core = zapcore.NewNopCore()
 	}
 
 	logger := zap.New(

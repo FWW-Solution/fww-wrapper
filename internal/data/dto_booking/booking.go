@@ -19,24 +19,24 @@ type AsyncBookResponse struct {
 
 type BookResponse struct {
 	// Airport Name
-	ArrivalAirport string `json:"arrival_airport"`
-	ArrivalTime    string `json:"arrival_time"`
-	BookExpiredAt  string `json:"book_expired_at"`
-	CodeBooking    string `json:"code_booking"`
-	CodeFlight     string `json:"code_flight"`
+	ArrivalAirport string `mapstructure:"arrival_airport"`
+	ArrivalTime    string `mapstructure:"arrival_time"`
+	BookExpiredAt  string `mapstructure:"book_expired_at"`
+	CodeBooking    string `mapstructure:"code_booking"`
+	CodeFlight     string `mapstructure:"code_flight"`
 	// Airport Name
-	DepartureAirport string               `json:"departure_airport"`
-	DepartureTime    string               `json:"departure_time"`
-	Details          []BookResponseDetail `json:"details"`
-	ID               int64                `json:"id"`
-	PaymentExpiredAt string               `json:"payment_expired_at"`
-	TotalPrice       float64              `json:"total_price"`
+	DepartureAirport string               `mapstructure:"departure_airport"`
+	DepartureTime    string               `mapstructure:"departure_time"`
+	Details          []BookResponseDetail `mapstructure:"details"`
+	ID               int64                `mapstructure:"id"`
+	PaymentExpiredAt string               `mapstructure:"payment_expired_at"`
+	TotalPrice       float64              `mapstructure:"total_price"`
 }
 
 type BookResponseDetail struct {
-	Bagage        int     `json:"bagage"`
-	Class         string  `json:"class"`
-	PassangerName string  `json:"passanger_name"`
-	Price         float64 `json:"price"`
-	SeatNumber    string  `json:"seat_number"`
+	Bagage        int     `mapstructure:"bagage"`
+	Class         string  `mapstructure:"class"`
+	PassangerName string  `mapstructure:"passanger_name"`
+	Price         float64 `mapstructure:"price"`
+	SeatNumber    string  `mapstructure:"seat_number"`
 }

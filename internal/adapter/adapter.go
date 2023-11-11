@@ -26,6 +26,7 @@ type Adapter interface {
 	GetDetailFlightByID(id int64) (resp dto_flight.ResponseFlightDetail, err error)
 	// Booking
 	Booking(body *dto_booking.Request) (resp dto_booking.AsyncBookResponse, err error)
+	GetDetailBooking(codeBooking string) (resp dto_booking.BookResponse, err error)
 }
 
 func New(client *circuit.HTTPClient, cfg *config.HttpClientConfig, publisher message.Publisher) Adapter {
