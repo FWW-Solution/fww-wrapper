@@ -49,14 +49,14 @@ func InitService(cfg *config.Config) *fiber.App {
 	}
 
 	// set message stream publisher
-	_, err = amqpMessageStream.NewPublisher()
+	pub, err := amqpMessageStream.NewPublisher()
 	if err != nil {
 		log.Error(err)
 		panic(err)
 	}
 
 	// Init Adapter
-	adapter := adapter.New(client, &cfg.HttpClient)
+	adapter := adapter.New(client, &cfg.HttpClient, pub)
 	// Init Controller
 	ctrl := controller.Controller{Adapter: adapter, Log: log}
 

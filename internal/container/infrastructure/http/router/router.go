@@ -25,5 +25,8 @@ func Initialize(app *fiber.App, ctrl *controller.Controller) *fiber.App {
 	//Flight
 	v1.Get("/flights", ctrl.GetFlights)
 	v1.Get("/flight", ctrl.GetDetailFlightByID)
+
+	// Booking
+	v1.Post("/booking", ctrl.Booking)
 	return app
 }
