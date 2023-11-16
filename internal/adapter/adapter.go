@@ -6,6 +6,7 @@ import (
 	"fww-wrapper/internal/data/dto_booking"
 	"fww-wrapper/internal/data/dto_flight"
 	"fww-wrapper/internal/data/dto_passanger"
+	"fww-wrapper/internal/data/dto_payment"
 
 	"github.com/ThreeDotsLabs/watermill/message"
 	circuit "github.com/rubyist/circuitbreaker"
@@ -16,7 +17,6 @@ type adapter struct {
 	cfg       *config.HttpClientConfig
 	publisher message.Publisher
 }
-
 type Adapter interface {
 	GetPassanger(id int) (resp dto_passanger.ResponseDetail, err error)
 	RegisterPassanger(body *dto_passanger.RequestRegister) (resp dto_passanger.ResponseRegistered, err error)
@@ -27,6 +27,9 @@ type Adapter interface {
 	// Booking
 	Booking(body *dto_booking.Request) (resp dto_booking.AsyncBookResponse, err error)
 	GetDetailBooking(codeBooking string) (resp dto_booking.BookResponse, err error)
+	// Payment
+	DoPayment(body *dto_payment.Request) (resp dto_payment.AsyncPaymentResponse, err error)
+	GetPaymentStatus(paymentCode string) (resp dto_payment.StatusResponse, err error)
 }
 
 func New(client *circuit.HTTPClient, cfg *config.HttpClientConfig, publisher message.Publisher) Adapter {

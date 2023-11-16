@@ -20,3 +20,14 @@ func ResponseInternalServerError(err error) dto.BaseResponse {
 	}
 
 }
+
+// ResponseBadRequest is a function to build response bad request.
+func ResponseBadRequest(errMessage error) dto.BaseResponse {
+	meta := dto.MetaResponse{
+		StatusCode: "ERR400",
+		IsSuccess:  false,
+		Message:    errMessage.Error(),
+	}
+
+	return ResponseBuilder(nil, meta)
+}
