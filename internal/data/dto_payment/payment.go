@@ -10,6 +10,5 @@ type AsyncPaymentResponse struct {
 }
 
 type StatusResponse struct {
-	PaymentExpiredAt string `mapstructure:"payment_expired_at"`
-	Status           string `mapstructure:"status"`
+	Status string `mapstructure:"status"`
 }
