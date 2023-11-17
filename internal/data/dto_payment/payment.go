@@ -12,3 +12,9 @@ type AsyncPaymentResponse struct {
 type StatusResponse struct {
 	Status string `mapstructure:"status"`
 }
+
+type MethodResponse struct {
+	ID       int64  `mapstructure:"id"`
+	IsActive bool   `mapstructure:"is_active"`
+	Name     string `mapstructure:"name"`
+}

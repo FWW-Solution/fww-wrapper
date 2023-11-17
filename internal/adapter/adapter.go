@@ -17,6 +17,7 @@ type adapter struct {
 	cfg       *config.HttpClientConfig
 	publisher message.Publisher
 }
+
 type Adapter interface {
 	GetPassanger(id int) (resp dto_passanger.ResponseDetail, err error)
 	RegisterPassanger(body *dto_passanger.RequestRegister) (resp dto_passanger.ResponseRegistered, err error)
@@ -30,6 +31,7 @@ type Adapter interface {
 	// Payment
 	DoPayment(body *dto_payment.Request) (resp dto_payment.AsyncPaymentResponse, err error)
 	GetPaymentStatus(paymentCode string) (resp dto_payment.StatusResponse, err error)
+	GetPaymentMethods() (resp []dto_payment.MethodResponse, err error)
 }
 
 func New(client *circuit.HTTPClient, cfg *config.HttpClientConfig, publisher message.Publisher) Adapter {

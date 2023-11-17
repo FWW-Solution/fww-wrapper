@@ -63,3 +63,32 @@ func (a *adapter) GetPaymentStatus(paymentCode string) (resp dto_payment.StatusR
 
 	return resp, nil
 }
+
+// GetPaymentMethods implements Adapter.
+func (a *adapter) GetPaymentMethods() (resp []dto_payment.MethodResponse, err error) {
+	url := fmt.Sprintf("http://%s:%s/api/private/v1/payment/methods", a.cfg.Host, a.cfg.Port)
+
+	response, err := a.client.Get(url)
+	if err != nil {
+		return resp, err
+	}
+
+	defer response.Body.Close()
+
+	if response.StatusCode != 200 {
+		return resp, err
+	}
+
+	var responseBase dto.BaseResponse
+
+	dec := json.NewDecoder(response.Body)
+	if err = dec.Decode(&responseBase); err != nil {
+		return resp, err
+	}
+
+	if err = mapstructure.Decode(responseBase.Data, &resp); err != nil {
+		return resp, err
+	}
+
+	return resp, nil
+}
