@@ -34,7 +34,7 @@ type Adapter interface {
 	GetPaymentStatus(paymentCode string) (resp dto_payment.StatusResponse, err error)
 	GetPaymentMethods() (resp []dto_payment.MethodResponse, err error)
 	// Ticket
-	RedeemTicket(body *dto_ticket.Request) (resp dto_payment.AsyncPaymentResponse, err error)
+	RedeemTicket(body *dto_ticket.Request) (resp dto_ticket.Response, err error)
 }
 
 func New(client *circuit.HTTPClient, cfg *config.HttpClientConfig, publisher message.Publisher) Adapter {

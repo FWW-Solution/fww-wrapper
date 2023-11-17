@@ -4,7 +4,6 @@ import (
 	"bytes"
 	"fmt"
 	"fww-wrapper/internal/data/dto"
-	"fww-wrapper/internal/data/dto_payment"
 	"fww-wrapper/internal/data/dto_ticket"
 	"net/http"
 
@@ -13,7 +12,7 @@ import (
 )
 
 // RedeemTicket implements Adapter.
-func (a *adapter) RedeemTicket(body *dto_ticket.Request) (resp dto_payment.AsyncPaymentResponse, err error) {
+func (a *adapter) RedeemTicket(body *dto_ticket.Request) (resp dto_ticket.Response, err error) {
 
 	payload, err := json.MarshalIndent(body, "", "  ")
 	if err != nil {
