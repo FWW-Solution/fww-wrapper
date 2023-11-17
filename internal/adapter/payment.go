@@ -3,10 +3,12 @@ package adapter
 import (
 	"encoding/json"
 	"fmt"
+	"fww-wrapper/internal/data/dto"
 	"fww-wrapper/internal/data/dto_payment"
 
 	"github.com/ThreeDotsLabs/watermill"
 	"github.com/ThreeDotsLabs/watermill/message"
+	"github.com/mitchellh/mapstructure"
 )
 
 // DoPayment implements Adapter.
@@ -48,12 +50,16 @@ func (a *adapter) GetPaymentStatus(paymentCode string) (resp dto_payment.StatusR
 		return resp, err
 	}
 
-	var responseBase dto_payment.StatusResponse
+	var responseBase dto.BaseResponse
 
 	dec := json.NewDecoder(response.Body)
 	if err = dec.Decode(&responseBase); err != nil {
-		return
+		return resp, err
 	}
 
-	return responseBase, nil
+	if err = mapstructure.Decode(responseBase.Data, &resp); err != nil {
+		return resp, err
+	}
+
+	return resp, nil
 }
