@@ -7,6 +7,7 @@ import (
 	"fww-wrapper/internal/data/dto_flight"
 	"fww-wrapper/internal/data/dto_passanger"
 	"fww-wrapper/internal/data/dto_payment"
+	"fww-wrapper/internal/data/dto_ticket"
 
 	"github.com/ThreeDotsLabs/watermill/message"
 	circuit "github.com/rubyist/circuitbreaker"
@@ -32,6 +33,8 @@ type Adapter interface {
 	DoPayment(body *dto_payment.Request) (resp dto_payment.AsyncPaymentResponse, err error)
 	GetPaymentStatus(paymentCode string) (resp dto_payment.StatusResponse, err error)
 	GetPaymentMethods() (resp []dto_payment.MethodResponse, err error)
+	// Ticket
+	RedeemTicket(body *dto_ticket.Request) (resp dto_payment.AsyncPaymentResponse, err error)
 }
 
 func New(client *circuit.HTTPClient, cfg *config.HttpClientConfig, publisher message.Publisher) Adapter {
