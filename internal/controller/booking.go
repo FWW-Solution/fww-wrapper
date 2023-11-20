@@ -4,7 +4,6 @@ import (
 	"fww-wrapper/internal/data/dto"
 	"fww-wrapper/internal/data/dto_booking"
 	"fww-wrapper/internal/tools"
-	"log"
 
 	"github.com/gofiber/fiber/v2"
 )
@@ -12,7 +11,6 @@ import (
 func (c *Controller) Booking(ctx *fiber.Ctx) error {
 	var req dto_booking.Request
 	if err := ctx.BodyParser(&req); err != nil {
-		log.Println(err)
 		c.Log.Error(err)
 		response := tools.ResponseBuilder(nil, dto.MetaResponse{
 			StatusCode: "ERR400",

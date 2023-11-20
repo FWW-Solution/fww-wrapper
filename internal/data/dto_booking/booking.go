@@ -7,10 +7,10 @@ type Request struct {
 }
 
 type BookDetail struct {
-	Baggage     int     `json:"baggage"`
-	Class       string  `json:"class"`
-	PassangerID int64   `json:"passanger_id"`
-	SeatNumber  *string `json:"seat_number"`
+	Baggage     int    `json:"baggage"`
+	Class       string `json:"class"`
+	PassangerID int64  `json:"passanger_id"`
+	SeatNumber  string `json:"seat_number"`
 }
 
 type AsyncBookResponse struct {
