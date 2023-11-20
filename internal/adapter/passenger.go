@@ -99,8 +99,6 @@ func (a *adapter) UpdatePassanger(body *dto_passanger.RequestUpdate) (resp dto_p
 		return
 	}
 
-	fmt.Println(responseBase.Data)
-
 	if err = mapstructure.Decode(responseBase.Data, &resp); err != nil {
 		return dto_passanger.ResponseUpdate{}, err
 	}

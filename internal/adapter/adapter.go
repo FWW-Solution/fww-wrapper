@@ -18,7 +18,6 @@ type adapter struct {
 	cfg       *config.HttpClientConfig
 	publisher message.Publisher
 }
-
 type Adapter interface {
 	GetPassanger(id int) (resp dto_passanger.ResponseDetail, err error)
 	RegisterPassanger(body *dto_passanger.RequestRegister) (resp dto_passanger.ResponseRegistered, err error)
