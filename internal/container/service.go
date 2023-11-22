@@ -66,9 +66,9 @@ func InitService(cfg *config.Config) (*fiber.App, []*message.Router) {
 
 	sendEmailNotificationRouter, err := messagestream.NewRouter(
 		pub,
-		"send_email_notification_from_bpm_poisoned",
-		"send_email_notification_from_bpm_handler",
-		"send_email_notification_from_bpm",
+		"send_email_notification_poisoned",
+		"send_email_notification_handler",
+		"send_email_notification",
 		sub,
 		ctrl.SendEmailNotificationHandler,
 	)
