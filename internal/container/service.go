@@ -13,10 +13,11 @@ import (
 	"fww-wrapper/internal/container/infrastructure/redis"
 	"fww-wrapper/internal/controller"
 
+	"github.com/ThreeDotsLabs/watermill/message"
 	"github.com/gofiber/fiber/v2"
 )
 
-func InitService(cfg *config.Config) *fiber.App {
+func InitService(cfg *config.Config) (*fiber.App, []*message.Router) {
 	// init redis
 	clientRedis := redis.SetupClient(&cfg.Redis)
 	// init redis cache
@@ -42,7 +43,7 @@ func InitService(cfg *config.Config) *fiber.App {
 	amqpMessageStream := messagestream.NewAmpq(&cfg.MessageStream)
 
 	// set message stream subscriber
-	_, err = amqpMessageStream.NewSubscriber()
+	sub, err := amqpMessageStream.NewSubscriber()
 	if err != nil {
 		log.Error(err)
 		panic(err)
@@ -56,12 +57,30 @@ func InitService(cfg *config.Config) *fiber.App {
 	}
 
 	// Init Adapter
-	adapter := adapter.New(client, &cfg.HttpClient, pub)
+	adapter := adapter.New(client, &cfg.HttpClient, pub, &cfg.Email)
 	// Init Controller
 	ctrl := controller.Controller{Adapter: adapter, Log: log}
+
+	// Init router
+	var messageRouters []*message.Router
+
+	sendEmailNotificationRouter, err := messagestream.NewRouter(
+		pub,
+		"send_email_notification_from_bpm_poisoned",
+		"send_email_notification_from_bpm_handler",
+		"send_email_notification_from_bpm",
+		sub,
+		ctrl.SendEmailNotificationHandler,
+	)
+
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	messageRouters = append(messageRouters, sendEmailNotificationRouter)
 
 	// Init Router
 	router := router.Initialize(server, &ctrl)
 
-	return router
+	return router, messageRouters
 }

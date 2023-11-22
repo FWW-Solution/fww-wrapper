@@ -5,6 +5,7 @@ import (
 	"fww-wrapper/internal/data/dto_airport"
 	"fww-wrapper/internal/data/dto_booking"
 	"fww-wrapper/internal/data/dto_flight"
+	"fww-wrapper/internal/data/dto_notification"
 	"fww-wrapper/internal/data/dto_passanger"
 	"fww-wrapper/internal/data/dto_payment"
 	"fww-wrapper/internal/data/dto_ticket"
@@ -14,10 +15,12 @@ import (
 )
 
 type adapter struct {
-	client    *circuit.HTTPClient
-	cfg       *config.HttpClientConfig
-	publisher message.Publisher
+	client      *circuit.HTTPClient
+	cfg         *config.HttpClientConfig
+	publisher   message.Publisher
+	emailConfig *config.EmailConfig
 }
+
 type Adapter interface {
 	GetPassanger(id int) (resp dto_passanger.ResponseDetail, err error)
 	RegisterPassanger(body *dto_passanger.RequestRegister) (resp dto_passanger.ResponseRegistered, err error)
@@ -34,12 +37,15 @@ type Adapter interface {
 	GetPaymentMethods() (resp []dto_payment.MethodResponse, err error)
 	// Ticket
 	RedeemTicket(body *dto_ticket.Request) (resp dto_ticket.Response, err error)
+	// Notification
+	SendEmailNotification(body *dto_notification.SendEmailRequest) (err error)
 }
 
-func New(client *circuit.HTTPClient, cfg *config.HttpClientConfig, publisher message.Publisher) Adapter {
+func New(client *circuit.HTTPClient, cfg *config.HttpClientConfig, publisher message.Publisher, emailConfig *config.EmailConfig) Adapter {
 	return &adapter{
-		client:    client,
-		cfg:       cfg,
-		publisher: publisher,
+		client:      client,
+		cfg:         cfg,
+		publisher:   publisher,
+		emailConfig: emailConfig,
 	}
 }

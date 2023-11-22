@@ -20,6 +20,16 @@ type Config struct {
 	Logger        LoggerConfig        `mapstructure:"logger"`
 	ObjectStorage MinioConfig         `mapstructure:"object_storage"`
 	Midtrans      MidtransConfig      `mapstructure:"midtrans"`
+	Email         EmailConfig         `mapstructure:"email"`
+}
+
+type EmailConfig struct {
+	Server       string `mapstructure:"server"`
+	SmtpPort     string `mapstructure:"smtp_port"`
+	SkipSSL      bool   `mapstructure:"skip_ssl"`
+	Username     string `mapstructure:"username"`
+	Password     string `mapstructure:"password"`
+	EmailAddress string `mapstructure:"email_address"`
 }
 
 type HttpServerConfig struct {
