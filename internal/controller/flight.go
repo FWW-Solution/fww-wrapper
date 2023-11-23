@@ -14,12 +14,12 @@ func (c *Controller) GetFlights(ctx *fiber.Ctx) error {
 	offset := ctx.Query("offset", "0")
 	limitInt, err := tools.StringToInt(limit)
 	if err != nil {
-		c.Log.Error(err)
+		c.Log.Warn(err)
 		return err
 	}
 	offsetInt, err := tools.StringToInt(offset)
 	if err != nil {
-		c.Log.Error(err)
+		c.Log.Warn(err)
 		return err
 	}
 
@@ -44,6 +44,10 @@ func (c *Controller) GetDetailFlightByID(ctx *fiber.Ctx) error {
 	id := ctx.Query("id", "")
 
 	idInt64, err := tools.StringToInt64(id)
+	if err != nil {
+		c.Log.Warn(err)
+		return err
+	}
 
 	result, err := c.Adapter.GetDetailFlightByID(idInt64)
 	if err != nil {

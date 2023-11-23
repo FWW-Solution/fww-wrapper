@@ -46,13 +46,18 @@ func (a *adapter) RegisterPassanger(body *dto_passanger.RequestRegister) (resp d
 
 	url := fmt.Sprintf("http://%s:%s/api/private/v1/passanger", a.cfg.Host, a.cfg.Port)
 	req, err := http.NewRequest("POST", url, bytes.NewBuffer(payload))
-	req.Header.Set("Content-Type", "application/json")
-	response, err := a.client.Do(req)
 	if err != nil {
 		return dto_passanger.ResponseRegistered{}, err
 	}
+	req.Header.Set("Content-Type", "application/json")
+	response, err := a.client.Do(req)
 
-	defer response.Body.Close()
+	defer func() {
+		err := response.Body.Close()
+		if err != nil {
+			fmt.Println(err)
+		}
+	}()
 
 	if response.StatusCode != http.StatusCreated {
 		return dto_passanger.ResponseRegistered{}, fmt.Errorf("error status code: %d", response.StatusCode)
@@ -80,14 +85,18 @@ func (a *adapter) UpdatePassanger(body *dto_passanger.RequestUpdate) (resp dto_p
 
 	url := fmt.Sprintf("http://%s:%s/api/private/v1/passanger", a.cfg.Host, a.cfg.Port)
 	req, err := http.NewRequest("PUT", url, bytes.NewBuffer(payload))
-	req.Header.Set("Content-Type", "application/json")
-	response, err := a.client.Do(req)
 	if err != nil {
 		return dto_passanger.ResponseUpdate{}, err
 	}
+	req.Header.Set("Content-Type", "application/json")
+	response, err := a.client.Do(req)
 
-	defer response.Body.Close()
-
+	defer func() {
+		err := response.Body.Close()
+		if err != nil {
+			fmt.Println(err)
+		}
+	}()
 	if response.StatusCode != http.StatusCreated {
 		return dto_passanger.ResponseUpdate{}, fmt.Errorf("error status code: %d", response.StatusCode)
 	}

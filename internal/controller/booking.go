@@ -11,7 +11,7 @@ import (
 func (c *Controller) Booking(ctx *fiber.Ctx) error {
 	var req dto_booking.Request
 	if err := ctx.BodyParser(&req); err != nil {
-		c.Log.Error(err)
+		c.Log.Warn(err)
 		response := tools.ResponseBuilder(nil, dto.MetaResponse{
 			StatusCode: "ERR400",
 			IsSuccess:  false,
