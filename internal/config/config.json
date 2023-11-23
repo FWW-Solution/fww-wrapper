@@ -65,5 +65,13 @@
         "error_rate": 0.0,
         "threshold": 0,
         "type": "consecutive"
+    },
+    "email": {
+        "server": "email-smtp.ap-southeast-1.amazonaws.com",
+        "smtp_port": "587",
+        "skip_ssl": true,
+        "username": "AKIA2WLDYKX5AEADSS4R",
+        "password": "BAsHw90tlI1hxXxZIBe7Bjtori+8NCAFsW9U1Zu2F5AX",
+        "email_address": "christian_mahardhika@telkomsel.co.id"
     }
 }

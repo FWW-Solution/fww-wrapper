@@ -13,7 +13,7 @@ func InitializeSendEmail(cfg *config.EmailConfig) (d *gomail.Dialer, m *gomail.M
 	if err != nil {
 		panic(err)
 	}
-	d = &gomail.Dialer{Host: cfg.Server, Port: port}
+	d = &gomail.Dialer{Host: cfg.Server, Port: port, Username: cfg.Username, Password: cfg.Password}
 	d.TLSConfig = &tls.Config{InsecureSkipVerify: cfg.SkipSSL}
 
 	m = gomail.NewMessage()
