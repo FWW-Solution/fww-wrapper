@@ -1,6 +1,7 @@
 package controller
 
 import (
+	"fmt"
 	"fww-wrapper/internal/data/dto"
 	"fww-wrapper/internal/data/dto_booking"
 	"fww-wrapper/internal/tools"
@@ -39,6 +40,8 @@ func (c *Controller) Booking(ctx *fiber.Ctx) error {
 
 func (c *Controller) GetDetailBooking(ctx *fiber.Ctx) error {
 	codeBooking := ctx.Query("code_booking", "")
+
+	fmt.Println(codeBooking)
 
 	result, err := c.Adapter.GetDetailBooking(codeBooking)
 	if err != nil {

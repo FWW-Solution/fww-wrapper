@@ -34,7 +34,7 @@ func Initialize(app *fiber.App, ctrl *controller.Controller) *fiber.App {
 	v1.Post("/payment", ctrl.DoPayment)
 	// Payment
 	v1.Get("/payment/status", ctrl.GetPaymentStatus)
-	v1.Get("/payemnt/methods", ctrl.GetPaymentMethods)
+	v1.Get("/payment/methods", ctrl.GetPaymentMethods)
 
 	// ticket
 	v1.Post("/ticket/redeem", ctrl.RedeemTicket)
