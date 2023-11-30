@@ -104,6 +104,7 @@ type MessageStreamConfig struct {
 	ExchangeName   string `envconfig:"message_stream_exchange_name"`
 	PublishTopic   string `envconfig:"message_stream_publish_topic"`
 	SubscribeTopic string `envconfig:"message_stream_subscribe_topic"`
+	SSL            bool   `envconfig:"message_stream_ssl"`
 }
 
 type RedisConfig struct {
