@@ -87,11 +87,14 @@ require (
 require (
 	github.com/ThreeDotsLabs/watermill v1.3.5
 	github.com/ThreeDotsLabs/watermill-amqp v1.1.4
+	github.com/dgrijalva/jwt-go v3.2.0+incompatible
 	github.com/go-playground/validator/v10 v10.16.0
 	github.com/go-redsync/redsync/v4 v4.11.0
 	github.com/goccy/go-json v0.10.2
 	github.com/gofiber/fiber/v2 v2.50.0
 	github.com/hashicorp/vault-client-go v0.4.2
+	github.com/jmoiron/sqlx v1.3.5
+	github.com/lib/pq v1.10.9
 	github.com/minio/minio-go/v7 v7.0.63
 	github.com/redis/go-redis/v9 v9.3.0
 	github.com/rubyist/circuitbreaker v2.2.1+incompatible

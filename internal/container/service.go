@@ -3,6 +3,7 @@ package container
 import (
 	"fww-wrapper/internal/adapter"
 	"fww-wrapper/internal/config"
+	"fww-wrapper/internal/container/infrastructure/database"
 	grpcclient "fww-wrapper/internal/container/infrastructure/grpc/client"
 	grpcserver "fww-wrapper/internal/container/infrastructure/grpc/server"
 	"fww-wrapper/internal/container/infrastructure/http"
@@ -12,12 +13,16 @@ import (
 	messagestream "fww-wrapper/internal/container/infrastructure/message_stream"
 	"fww-wrapper/internal/container/infrastructure/redis"
 	"fww-wrapper/internal/controller"
+	"fww-wrapper/internal/middleware"
+	"fww-wrapper/internal/repository"
 
 	"github.com/ThreeDotsLabs/watermill/message"
 	"github.com/gofiber/fiber/v2"
 )
 
 func InitService(cfg *config.Config) (*fiber.App, []*message.Router) {
+	// init database
+	db := database.GetConnection(&cfg.Database)
 	// init redis
 	clientRedis := redis.SetupClient(&cfg.Redis)
 	// init redis cache
@@ -56,10 +61,16 @@ func InitService(cfg *config.Config) (*fiber.App, []*message.Router) {
 		panic(err)
 	}
 
+	// Init Repository
+	repository := repository.NewRepository(db)
+
+	// Init Middleware
+	middleware := middleware.Middleware{Repository: repository}
+
 	// Init Adapter
 	adapter := adapter.New(client, &cfg.HttpClient, pub, &cfg.Email)
 	// Init Controller
-	ctrl := controller.Controller{Adapter: adapter, Log: log}
+	ctrl := controller.Controller{Adapter: adapter, Log: log, Middleware: middleware}
 
 	// Init router
 	var messageRouters []*message.Router
