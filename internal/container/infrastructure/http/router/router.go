@@ -8,9 +8,7 @@ import (
 )
 
 func Initialize(app *fiber.App, ctrl *controller.Controller) *fiber.App {
-	app.Get("/wrapper", monitor.New(monitor.Config{Title: "fww-wrapper metrics page"}))
-
-	app.Group("/wrapper")
+	app.Get("/", monitor.New(monitor.Config{Title: "fww-wrapper metrics page"}))
 
 	Api := app.Group("/api")
 
