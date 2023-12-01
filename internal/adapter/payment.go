@@ -2,6 +2,7 @@ package adapter
 
 import (
 	"encoding/json"
+	"errors"
 	"fmt"
 	"fww-wrapper/internal/data/dto"
 	"fww-wrapper/internal/data/dto_payment"
@@ -47,7 +48,8 @@ func (a *adapter) GetPaymentStatus(paymentCode string) (resp dto_payment.StatusR
 	defer response.Body.Close()
 
 	if response.StatusCode != 200 {
-		return resp, err
+		errorMsg := fmt.Sprintf("error get payment methods, status code: %d", response.StatusCode)
+		return resp, errors.New(errorMsg)
 	}
 
 	var responseBase dto.BaseResponse
@@ -75,8 +77,11 @@ func (a *adapter) GetPaymentMethods() (resp []dto_payment.MethodResponse, err er
 
 	defer response.Body.Close()
 
+	fmt.Println(response.StatusCode)
+
 	if response.StatusCode != 200 {
-		return resp, err
+		errorMsg := fmt.Sprintf("error get payment methods, status code: %d", response.StatusCode)
+		return resp, errors.New(errorMsg)
 	}
 
 	var responseBase dto.BaseResponse

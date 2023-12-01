@@ -1,10 +1,11 @@
 package middleware
 
 import (
+	"errors"
 	"fmt"
 	"fww-wrapper/internal/repository"
+	"go/token"
 	"log"
-	"strconv"
 	"time"
 
 	"github.com/dgrijalva/jwt-go"
@@ -50,16 +51,15 @@ func (m *Middleware) ValidateJWTUser(ctx *fiber.Ctx) error {
 		})
 	}
 
+	token := jwtToken[7:token.Pos(len(jwtToken))]
+	fmt.Println("token: ", token)
 	// validate jwt token
-	userID, err := decodeToken(jwtToken)
+	userID, err := decodeToken(token)
 	if err != nil {
 		return ctx.Status(fiber.StatusUnauthorized).JSON(fiber.Map{
 			"message": "Unauthorized",
 		})
 	}
-
-	// String to Int64
-	userIDInt64, err := strconv.ParseInt(userID, 10, 64)
 	if err != nil {
 		log.Fatal(err)
 		return ctx.Status(fiber.StatusUnauthorized).JSON(fiber.Map{
@@ -68,7 +68,7 @@ func (m *Middleware) ValidateJWTUser(ctx *fiber.Ctx) error {
 	}
 
 	// validate user id
-	_, err = m.Repository.FindUserByID(userIDInt64)
+	_, err = m.Repository.FindUserByID(userID)
 	if err != nil {
 		return ctx.Status(fiber.StatusUnauthorized).JSON(fiber.Map{
 			"message": "Unauthorized",
@@ -79,11 +79,11 @@ func (m *Middleware) ValidateJWTUser(ctx *fiber.Ctx) error {
 }
 
 type CustomClaims struct {
-	UserID string `json:"user_id"`
+	UserID int64 `json:"id"`
 	jwt.StandardClaims
 }
 
-func decodeToken(jwtToken string) (string, error) {
+func decodeToken(jwtToken string) (int64, error) {
 	// Decode Token JWT
 	token, err := jwt.ParseWithClaims(jwtToken, &CustomClaims{}, func(token *jwt.Token) (interface{}, error) {
 		if jwt.GetSigningMethod("HS256") != token.Method {
@@ -94,11 +94,11 @@ func decodeToken(jwtToken string) (string, error) {
 
 	if claims, ok := token.Claims.(*CustomClaims); ok && token.Valid {
 		if claims.StandardClaims.ExpiresAt < time.Now().Unix() {
-			return "", err
+			return 0, errors.New("token expired")
 		}
 		return claims.UserID, nil
 	} else {
-		return "", err
+		return 0, err
 	}
 
 }

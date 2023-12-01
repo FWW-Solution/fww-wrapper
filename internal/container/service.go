@@ -15,6 +15,7 @@ import (
 	"fww-wrapper/internal/controller"
 	"fww-wrapper/internal/middleware"
 	"fww-wrapper/internal/repository"
+	"fww-wrapper/internal/usecase"
 
 	"github.com/ThreeDotsLabs/watermill/message"
 	"github.com/gofiber/fiber/v2"
@@ -69,8 +70,10 @@ func InitService(cfg *config.Config) (*fiber.App, []*message.Router) {
 
 	// Init Adapter
 	adapter := adapter.New(client, &cfg.HttpClient, pub, &cfg.Email)
+	// Init UseCase
+	usecase := usecase.NewUsecase(repository)
 	// Init Controller
-	ctrl := controller.Controller{Adapter: adapter, Log: log, Middleware: middleware}
+	ctrl := controller.Controller{Adapter: adapter, Log: log, UseCase: usecase}
 
 	// Init router
 	var messageRouters []*message.Router
@@ -91,7 +94,7 @@ func InitService(cfg *config.Config) (*fiber.App, []*message.Router) {
 	messageRouters = append(messageRouters, sendEmailNotificationRouter)
 
 	// Init Router
-	router := router.Initialize(server, &ctrl)
+	router := router.Initialize(server, &ctrl, &middleware)
 
 	return router, messageRouters
 }
