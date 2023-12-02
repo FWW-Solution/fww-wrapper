@@ -11,7 +11,9 @@ import (
 func Initialize(app *fiber.App, ctrl *controller.Controller, m *middleware.Middleware) *fiber.App {
 	app.Get("/", monitor.New(monitor.Config{Title: "fww-wrapper metrics page"}))
 
-	Api := app.Group("/api")
+	wrapper := app.Group("/wrapper")
+
+	Api := wrapper.Group("/api")
 
 	v1 := Api.Group("/v1")
 
