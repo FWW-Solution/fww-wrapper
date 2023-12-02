@@ -45,6 +45,7 @@ func (m *Middleware) ValidateAPIKey(ctx *fiber.Ctx) error {
 
 func (m *Middleware) ValidateJWTUser(ctx *fiber.Ctx) error {
 	jwtToken := ctx.Get("Authorization")
+	fmt.Println("jwtToken: ", jwtToken)
 	if jwtToken == "" {
 		return ctx.Status(fiber.StatusUnauthorized).JSON(fiber.Map{
 			"message": "Unauthorized",
@@ -68,12 +69,16 @@ func (m *Middleware) ValidateJWTUser(ctx *fiber.Ctx) error {
 	}
 
 	// validate user id
-	_, err = m.Repository.FindUserByID(userID)
+	result, err := m.Repository.FindUserByID(userID)
 	if err != nil {
 		return ctx.Status(fiber.StatusUnauthorized).JSON(fiber.Map{
 			"message": "Unauthorized",
 		})
 	}
+
+	// set user id to context
+	ctx.Locals("userID", result.ID)
+	fmt.Println("userID: ", result.ID)
 
 	return ctx.Next()
 }

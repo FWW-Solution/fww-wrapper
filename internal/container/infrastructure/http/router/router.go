@@ -9,11 +9,10 @@ import (
 )
 
 func Initialize(app *fiber.App, ctrl *controller.Controller, m *middleware.Middleware) *fiber.App {
-	wrapper := app.Group("/wrapper")
 
-	wrapper.Get("/", monitor.New(monitor.Config{Title: "fww-wrapper metrics page"}))
+	app.Get("/", monitor.New(monitor.Config{Title: "fww-wrapper metrics page"}))
 
-	Api := wrapper.Group("/api")
+	Api := app.Group("/api")
 
 	v1 := Api.Group("/v1")
 
@@ -21,9 +20,9 @@ func Initialize(app *fiber.App, ctrl *controller.Controller, m *middleware.Middl
 	v1.Post("/user/login", ctrl.Login)
 
 	// Passanger
-	v1.Post("/passanger", m.ValidateAPIKey, ctrl.RegisterPassanger)
-	v1.Get("/passanger", m.ValidateAPIKey, ctrl.DetailPassanger)
-	v1.Put("/passanger", m.ValidateAPIKey, ctrl.UpdatePassanger)
+	v1.Post("/passanger", m.ValidateJWTUser, ctrl.RegisterPassanger)
+	v1.Get("/passanger", m.ValidateJWTUser, ctrl.DetailPassanger)
+	v1.Put("/passanger", m.ValidateJWTUser, ctrl.UpdatePassanger)
 
 	// Airport
 	v1.Get("/airports", m.ValidateJWTUser, ctrl.GetAirport)
